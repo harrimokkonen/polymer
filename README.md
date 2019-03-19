@@ -1,3 +1,3 @@
-Molecular dynamics with Velocity Verlet integration for a single polymer in a 3D harmonic potential well. Random walk initialization of the polymer.
+WORK IN PROGRESS
 
-Not optimized for speed.
+Molecular dynamics with Velocity Verlet integration for a single polymer in a 3D harmonic potential well with FENE-LJ polymer model. Random walk initialization of the polymer.

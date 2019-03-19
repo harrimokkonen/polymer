@@ -91,11 +91,11 @@ class Polymer(object):
 
         for i in range(1,self.N-1):
             F_x[i] = self.k_harm*(self.x[i-1] - \
-                     2*self.x[i] + self.x[i+1])
+                     2.0*self.x[i] + self.x[i+1])
             F_y[i] = self.k_harm*(self.y[i-1] - \
-                     2*self.y[i] + self.y[i+1])
+                     2.0*self.y[i] + self.y[i+1])
             F_y[i] = self.k_harm*(self.z[i-1] - \
-                     2*self.z[i] + self.z[i+1])
+                     2.0*self.z[i] + self.z[i+1])
         
         return F_x, F_y, F_z
 
@@ -157,8 +157,7 @@ class Polymer(object):
     def F_tot(self):
         Fx_ext, Fy_ext, Fz_ext = self.F_ext()
         Fx_LJ, Fy_LJ, Fz_LJ = self.F_LJ()
-        Fx_FENE, Fy_FENE, Fz_FENE = self.F_FENE()
-        Fx_harm, Fy_harm, Fz_harm = self.F_harm()
+        Fx_FENE, Fy_FENE, Fz_FENE = self.F_FENE()        
         return Fx_ext+Fx_LJ+Fx_FENE,Fy_ext+Fy_LJ+Fy_FENE, \
                 Fz_ext+Fz_LJ+Fz_FENE
 

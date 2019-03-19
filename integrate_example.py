@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as anim
 import polymer
 
-dt = 0.0005
+dt = 0.00005
 T = 100
 N = 8
 k_harm = 15.0
@@ -12,7 +12,7 @@ k_F = 15.0
 R0 = 2.0
 eps = 1.0
 sigma = 1.0
-omega = 10.0
+omega = 1.0
 
 rg = np.zeros(T)
 cm = np.zeros(T)

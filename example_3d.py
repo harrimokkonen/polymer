@@ -1,18 +1,28 @@
+import os
+import glob 
+import subprocess
 import numpy as np
 from mayavi import mlab
 
 import polymer 
 
-dt = 0.0001
+wrkdir = 'output/frames/'
+
+dt = 0.00001
 T = 100
-N = 32
-M = 15
+N = 8
+M = 4
 k_harm = 30.0
-k_F = 150.0
+k_F = 15.0
 R0 = 2.0
 eps = 1.0
 sigma = 1.0
-omega = 0.001
+omega = 0.00001
+
+print('clearing workdir...')
+files = glob.glob(wrkdir + '/*')
+for f in files:
+    os.remove(f)
 
 mlab.figure(1, bgcolor=(0, 0, 0), size=(800, 800))
 mlab.clf()
@@ -37,21 +47,22 @@ max = V(X,Y,Z).max()
 vol = mlab.pipeline.volume(source,  vmin=min + 0.8 * (max - min),
                                     vmax=min + 0.9 * (max - min))
 
-
 @mlab.animate(delay=50)
 def anim():
-    i = 0
-    while True:
-        for j in range(0,200):
+    for i in range(0,T):
+        for _ in range(0,1000):
             pol.leapfrog_update(dt)
         p.mlab_source.x = pol.x
         p.mlab_source.y = pol.y
         p.mlab_source.z = pol.z
         mlab.savefig(filename='output/frames/frame{0}.png'.format(i))
-        i += 1
+        print('Wrote frame{0}.png'.format(i))
         yield
 
+print('Creating animation frames...')
 anim()
-
-#mlab.view(132, 54, 45, [21, 20, 21.5])
 mlab.show()
+print('Animation complete, ffmpeg rendering...')
+proc = subprocess.Popen('ffmpeg -f image2 -r 10 -i frame%0d.png -vcodec mpeg4 -y out.mp4', cwd=wrkdir)
+proc.wait()
+print('Complete!')
