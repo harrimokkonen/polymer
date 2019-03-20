@@ -8,16 +8,18 @@ import polymer
 
 wrkdir = 'output/frames/'
 
-dt = 0.00001
-T = 100
-N = 8
-M = 4
+dt = 0.001
+Nfr = 500
+N = 64
+M = 20
 k_harm = 30.0
 k_F = 15.0
 R0 = 2.0
 eps = 1.0
 sigma = 1.0
-omega = 0.00001
+omega = 0.0001
+gamma = 0.9
+T = 1.0
 
 print('clearing workdir...')
 files = glob.glob(wrkdir + '/*')
@@ -27,7 +29,7 @@ for f in files:
 mlab.figure(1, bgcolor=(0, 0, 0), size=(800, 800))
 mlab.clf()
 
-pol = polymer.Polymer(N,k_harm,k_F,R0,eps,sigma,omega)
+pol = polymer.Polymer(N,k_harm,k_F,R0,eps,sigma,omega,gamma,T,dt)
 pol.randomwalk_configuration(True)
 
 p = mlab.points3d(pol.x,pol.y,pol.z,
@@ -44,14 +46,14 @@ source = mlab.pipeline.scalar_field(X,Y,Z,V)
 
 min = V(X,Y,Z).min()
 max = V(X,Y,Z).max()
-vol = mlab.pipeline.volume(source,  vmin=min + 0.8 * (max - min),
+vol = mlab.pipeline.volume(source,  vmin=min + 0.85 * (max - min),
                                     vmax=min + 0.9 * (max - min))
 
 @mlab.animate(delay=50)
 def anim():
-    for i in range(0,T):
-        for _ in range(0,1000):
-            pol.leapfrog_update(dt)
+    for i in range(0,Nfr):
+        for _ in range(0,50):
+            pol.bbk_update()
         p.mlab_source.x = pol.x
         p.mlab_source.y = pol.y
         p.mlab_source.z = pol.z
