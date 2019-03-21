@@ -1,2 +1,5 @@
+.vscode
 __pycache__
-output
+_output
+*.exe
+*.obj

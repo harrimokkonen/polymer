@@ -252,13 +252,13 @@ class Polymer(object):
         for i in range(1,self.N):
             succeeded = False
             while not succeeded:
-                theta = np.random.rand()
-                phi = np.random.rand()
-                self.x[i] = self.x[i-1] + np.sin(1.0*np.pi*theta)*\
-                                          np.cos(1.0*np.pi*phi)
-                self.y[i] = self.y[i-1] + np.sin(1.0*np.pi*theta)*\
-                                          np.sin(1.0*np.pi*theta)
-                self.z[i] = self.z[i-1] + np.cos(1.0*np.pi*theta)
+                theta = 1.0*np.pi*np.random.rand()
+                phi = 2.0*np.pi*np.random.rand()
+                self.x[i] = self.x[i-1] + np.sin(theta)*\
+                                          np.cos(phi)
+                self.y[i] = self.y[i-1] + np.sin(theta)*\
+                                          np.sin(phi)
+                self.z[i] = self.z[i-1] + np.cos(theta)
 
                 succeeded = True 
                 for j in range(0,i-1):

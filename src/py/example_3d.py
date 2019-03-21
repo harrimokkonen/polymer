@@ -6,10 +6,10 @@ from mayavi import mlab
 
 import polymer 
 
-wrkdir = 'output/frames/'
+wrkdir = '../../_output/frames/'
 
 dt = 0.001
-Nfr = 500
+Nfr = 100
 N = 64
 M = 20
 k_harm = 30.0
@@ -57,7 +57,7 @@ def anim():
         p.mlab_source.x = pol.x
         p.mlab_source.y = pol.y
         p.mlab_source.z = pol.z
-        mlab.savefig(filename='output/frames/frame{0}.png'.format(i))
+        mlab.savefig(filename='../../_output/frames/frame{0}.png'.format(i))
         print('Wrote frame{0}.png'.format(i))
         yield
 
