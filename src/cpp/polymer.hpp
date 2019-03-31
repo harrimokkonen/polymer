@@ -3,7 +3,6 @@
 
 #include <vector>
 #include <random>
-#include <tuple>
 
 enum PolymerModel {
   Harmonic,

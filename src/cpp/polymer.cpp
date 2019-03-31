@@ -1,7 +1,5 @@
-#include <random>
-#include <iostream>
 #include "polymer.hpp"
-
+#include <iostream>
 Polymer::Polymer(PolymerModel model, int N, float k_harm, float k_F, float R0,
                         float eps, float sigma, float omega,
                         float gamma, float T, float dt)
@@ -107,7 +105,9 @@ float Polymer::U_harm()
   float r2;
   for (int i = 0; i < N - 1; ++i)
   {
-    r2 = (x[i] - x[i + 1]) * (x[i] - x[i + 1]) + (y[i] - y[i + 1]) * (y[i] - y[i + 1]) + (z[i] - z[i + 1]) * (z[i] - z[i + 1]);
+    r2 = (x[i] - x[i + 1]) * (x[i] - x[i + 1]) 
+       + (y[i] - y[i + 1]) * (y[i] - y[i + 1]) 
+       + (z[i] - z[i + 1]) * (z[i] - z[i + 1]);
     U += 0.5 * k_harm * r2;
   }
   return U;
@@ -118,9 +118,11 @@ float Polymer::U_LJ()
   float U = 0.0;
   for (int i = 0; i < N; ++i)
   {
-    for (int j = i + 1; i < N; ++j)
+    for (int j = i + 1; j < N; ++j)
     {
-      r2 = (x[i] - x[i + 1]) * (x[i] - x[i + 1]) + (y[i] - y[i + 1]) * (y[i] - y[i + 1]) + (z[i] - z[i + 1]) * (z[i] - z[i + 1]);
+      r2 = (x[i] - x[i + 1]) * (x[i] - x[i + 1]) 
+         + (y[i] - y[i + 1]) * (y[i] - y[i + 1]) 
+         + (z[i] - z[i + 1]) * (z[i] - z[i + 1]);
       if (r2 < cutoff2)
       {
         fr6 = sigma2 * sigma2 * sigma2 / r2 / r2 / r2;
@@ -136,7 +138,9 @@ float Polymer::U_FENE()
   float U = 0.0;
   for (int i = 0; i < N - 1; ++i)
   {
-    r2 = (x[i] - x[i + 1]) * (x[i] - x[i + 1]) + (y[i] - y[i + 1]) * (y[i] - y[i + 1]) + (z[i] - z[i + 1]) * (z[i] - z[i + 1]);
+    r2 = (x[i] - x[i + 1]) * (x[i] - x[i + 1]) 
+       + (y[i] - y[i + 1]) * (y[i] - y[i + 1]) 
+       + (z[i] - z[i + 1]) * (z[i] - z[i + 1]);
     U += 0.5 * k_F * R0 * std::log(1 - r2 / R0 / R0);
   }
   return U;
@@ -164,6 +168,9 @@ float Polymer::E_tot() {
       break;
     case SelfAvoiding:
       E += U_FENE() + U_LJ() + U_ext();
+      break;
+    default:
+      break;
   }
   return E;
 }
@@ -194,9 +201,8 @@ void Polymer::UpdateF_LJ()
 
   for (int i = 0; i < N - 1; ++i)
   {
-    for (int j = i + 1; i < N; ++j)
+    for (int j = i + 1; j < N; ++j)
     {
-
       dx = x[i] - x[j];
       dy = y[i] - y[j];
       dz = z[i] - z[j];
@@ -227,12 +233,12 @@ void Polymer::UpdateF_FENE() {
       dz = z[i] - z[i+1];
       r2 = dx*dx + dy*dy + dz*dz;
       fac = k_F/(1-r2/R0/R0);
-      fx_FENE[i] += fac*dx;
-      fy_FENE[i] += fac*dy;
-      fz_FENE[i] += fac*dz;
-      fx_FENE[i+1] -= fac*dx;
-      fy_FENE[i+1] -= fac*dy;
-      fz_FENE[i+1] -= fac*dz;
+      fx_FENE[i] -= fac*dx;
+      fy_FENE[i] -= fac*dy;
+      fz_FENE[i] -= fac*dz;
+      fx_FENE[i+1] += fac*dx;
+      fy_FENE[i+1] += fac*dy;
+      fz_FENE[i+1] += fac*dz;
   }
 };
 
